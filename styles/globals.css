@@ -14,3 +14,15 @@ a {
 * {
   box-sizing: border-box;
 }
+img {
+  object-fit: cover;
+  object-position: 0 2px;
+}
+/* -------------- Loading ----------- */
+@import url("./loading.css");
+
+/* -------------- Product ----------- */
+@import url("./product.css");
+
+/* -------------- Profile ----------- */
+@import url("./profile.css");
