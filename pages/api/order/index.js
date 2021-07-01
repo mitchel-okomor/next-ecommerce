@@ -5,11 +5,35 @@ import Products from "../../../models/productModel";
 
 connectDB();
 
+//routes
 export default async (req, res) => {
   switch (req.method) {
     case "POST":
       await createOrder(req, res);
       break;
+    case "GET":
+      await getOrders(req, res);
+      break;
+  }
+};
+
+//controllers
+const getOrders = async (req, res) => {
+  try {
+    const result = await auth(req, res);
+
+    let orders;
+    if (result.role !== "admin") {
+      orders = await Orders.find({ user: result.id }).populate(
+        "user",
+        "-password"
+      );
+    } else {
+      orders = await Orders.find().populate("user", "-password");
+    }
+    res.status(200).json({ orders });
+  } catch (err) {
+    return res.status(500).json({ err: err.message });
   }
 };
 
@@ -32,7 +56,7 @@ const createOrder = async (req, res) => {
 
     await newOrder.save();
     res.json({
-      msg: "payment successful, we will cntact you to confirm order",
+      msg: "Order placed successfully, we will contact you to confirm order",
       newOrder,
     });
   } catch (err) {

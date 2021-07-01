@@ -1,12 +1,17 @@
 import React, { useContext } from "react";
-import { PaystackConsumer, usePaystackPayment } from "react-paystack";
-import { postData } from "../utils/fetchData";
+import { usePaystackPayment } from "react-paystack";
+import { patchData } from "../utils/fetchData";
+import { DataContext } from "../store/GlobalState";
+import { updateItem } from "../store/Actions";
 
-function Pay({ total, address, mobile, state, dispatch, cart, auth }) {
+function Pay({ order }) {
+  const { state, dispatch } = useContext(DataContext);
+  const { orders } = state;
+
   const config = {
-    reference: new Date().getTime(),
-    email: "uslhr@example.com",
-    amount: 20000,
+    reference: order._id,
+    email: order.user.email,
+    amount: order.total * 100,
     publicKey: "pk_test_6218646e813546a27bc96b74c7ed71166de79471",
   };
 
@@ -14,20 +19,23 @@ function Pay({ total, address, mobile, state, dispatch, cart, auth }) {
   const handleSuccess = async (reference) => {
     // Implementation for whatever you want to do with reference and after success call.
     dispatch({ type: "NOTIFY", payload: { loading: true } });
-    postData(
-      "order",
-      {
-        address,
-        mobile,
-        cart,
-        total,
-      },
-      auth.token
-    ).then((res) => {
+    patchData(`order/${order._id}`, null, auth.token).then((res) => {
       if (res.err)
         return dispatch({ type: "NOTIFY", payload: { error: res.err } });
 
       dispatch({ type: "ADD_CART", payload: [] });
+      dispatch(
+        updateItem(
+          orders,
+          order._id,
+          {
+            ...order,
+            paid: true,
+            dateOfPayment: new Date().toDateString(),
+          },
+          "ADD_ORDERS"
+        )
+      );
       return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
     });
   };

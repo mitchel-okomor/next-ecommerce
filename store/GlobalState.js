@@ -10,9 +10,10 @@ export const DataProvider = ({ children }) => {
     auth: {},
     cart: [],
     modal: {},
+    orders: [],
   };
   const [state, dispatch] = useReducer(reducers, initialState);
-  const { cart } = state;
+  const { cart, auth } = state;
   useEffect(() => {
     const firstLogin = localStorage.getItem("firstLogin");
     if (firstLogin) {
