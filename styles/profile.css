@@ -18,7 +18,6 @@
 
 .profile_page .avatar:hover span {
   bottom: -15%;
-  cursor: pointer;
 }
 
 .profile_page .avatar span {
@@ -41,4 +40,9 @@
   width: 100%;
   height: 100%;
   opacity: 0;
+  cursor: pointer;
+}
+
+::-webkit-file-upload-button {
+  cursor: pointer;
 }

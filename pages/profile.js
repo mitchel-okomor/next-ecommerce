@@ -3,6 +3,7 @@ import Head from "next/head";
 import { DataContext } from "../store/GlobalState";
 import valid from "../utils/valid";
 import { patchData } from "../utils/fetchData";
+import { imageUpload } from "../utils/ImageUpload";
 
 function profile() {
   const initialState = {
@@ -31,6 +32,7 @@ function profile() {
         return dispatch({ type: "NOTIFY", payload: { error: errMsg } });
       updatePassword();
     }
+    if (name !== auth.name || avatar) updateInfo();
   };
 
   const updatePassword = () => {
@@ -42,6 +44,53 @@ function profile() {
     });
   };
 
+  const changeAvatar = (e) => {
+    const file = e.target.files[0];
+    if (!file)
+      return dispatch({
+        type: "NOTIFY",
+        payload: { error: "File does not exist" },
+      });
+
+    if (file.size > 1024 * 1024)
+      //1mb
+      return dispatch({
+        type: "NOTIFY",
+        payload: { error: "Image size should be less than 1mb" },
+      });
+    if (file.type !== "image/jpeg" && file.type !== "image/png")
+      return dispatch({
+        type: "NOTIFY",
+        payload: { error: "Image format is not supported" },
+      });
+    setData({ ...data, avatar: file });
+  };
+
+  const updateInfo = async () => {
+    let media;
+    dispatch({ type: "NOTIFY", payload: { loading: true } });
+    if (avatar) media = await imageUpload([avatar]);
+
+    patchData(
+      "user",
+      {
+        name,
+        avatar: avatar ? media[0].url : auth.user.avatar,
+      },
+      auth.token
+    ).then((res) => {
+      if (res.err)
+        return dispatch({ type: "NOTIFY", payload: { error: res.err } });
+      dispatch({
+        type: "AUTH",
+        payload: {
+          token: auth.token,
+          user: res.user,
+        },
+      });
+      return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
+    });
+  };
   useEffect(() => {
     if (auth.user) setData({ ...data, name: auth.user.name });
   }, [auth.user]);
@@ -50,16 +99,19 @@ function profile() {
   return (
     <div className="profile_page">
       <Head>
-        <title>profile</title>
+        <title>Profile</title>
       </Head>
 
       <section className="row text-secondary">
         <div className="col-md-4">
-          <h3 className="text-center text-uppercase">
+          <h4 className="text-center text-uppercase">
             {auth.user.role === "user" ? "User Profile" : "Admin Profile"}
-          </h3>
+          </h4>
           <div className="avatar">
-            <img src={auth.user.avatar} alt={auth.user.avatar} />
+            <img
+              src={avatar ? URL.createObjectURL(avatar) : auth.user.avatar}
+              alt="avatar"
+            />
             <span>
               <i className="fas fa-camera"></i>
               <p>Change</p>
@@ -67,7 +119,8 @@ function profile() {
                 type="file"
                 name="file"
                 id="file_up"
-                onChange={handleChange}
+                accept="image/*"
+                onChange={changeAvatar}
               />
             </span>
           </div>
