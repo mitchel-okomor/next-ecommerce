@@ -29,6 +29,11 @@ const reducers = (state, action) => {
         ...state,
         orders: payload,
       };
+    case ACTIONS.ADD_USERS:
+      return {
+        ...state,
+        users: payload,
+      };
     default:
       return state;
   }

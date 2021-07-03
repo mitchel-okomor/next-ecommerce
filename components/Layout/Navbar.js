@@ -23,8 +23,24 @@ function Navbar() {
     localStorage.removeItem("firstLogin");
     dispatch({ type: "AUTH", payload: {} });
     dispatch({ type: "NOTIFY", payload: { success: "Logged out!" } });
+    router.push("/");
   };
 
+  const adminRouter = () => {
+    return (
+      <>
+        <Link href="/users">
+          <a className="dropdown-item">Users</a>
+        </Link>
+        <Link href="/create">
+          <a className="dropdown-item">Products</a>
+        </Link>
+        <Link href="/categories">
+          <a className="dropdown-item">Categories</a>
+        </Link>
+      </>
+    );
+  };
   return (
     <nav className="navbar navbar-expand-lg navbar-light ">
       <a className="navbar-brand" href="/">
@@ -111,9 +127,15 @@ function Navbar() {
                 <Link href="/profile">
                   <a className="dropdown-item">Profile</a>
                 </Link>
-                <a className="dropdown-item" href="#" onClick={handleLogout}>
+                {auth.user.role === "admin" && adminRouter()}
+
+                <button
+                  className="dropdown-item"
+                  href="#"
+                  onClick={handleLogout}
+                >
                   Logout
-                </a>
+                </button>
               </div>
             </li>
           )}

@@ -21,7 +21,6 @@ export default async (req, res) => {
 const getOrders = async (req, res) => {
   try {
     const result = await auth(req, res);
-
     let orders;
     if (result.role !== "admin") {
       orders = await Orders.find({ user: result.id }).populate(

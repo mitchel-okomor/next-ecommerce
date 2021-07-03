@@ -17,6 +17,7 @@ function DetailOrder() {
     setOrderDetail(newArr);
   }, [orders]);
 
+  if (!auth.user) return null;
   return (
     <div className="my-3">
       <Head>
@@ -27,7 +28,11 @@ function DetailOrder() {
           <i className="fas fa-long-arrow-alt-left" aria-hidden></i> Go back
         </button>
       </div>
-      <OrderDetail orderDetail={orderDetail} />
+      <OrderDetail
+        orderDetail={orderDetail}
+        state={state}
+        dispatch={dispatch}
+      />
     </div>
   );
 }

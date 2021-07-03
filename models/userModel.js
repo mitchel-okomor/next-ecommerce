@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "",
+      default:
+        "https://res.cloudinary.com/codexaver/image/upload/v1624994870/avater_hxlhln.png",
     },
   },
   {

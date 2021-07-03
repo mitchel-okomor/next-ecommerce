@@ -1,7 +1,27 @@
 import Link from "next/link";
 import Pay from "./Pay";
+import { patchData } from "../utils/fetchData";
+import { updateItem } from "../store/Actions";
 
-const OrderDetail = ({ orderDetail }) => {
+const OrderDetail = ({ orderDetail, state, dispatch }) => {
+  const { auth, orders } = state;
+  const handleDelivered = (order) => {
+    dispatch({ type: "NOTIFY", payload: { loading: true } });
+    patchData(`order/delivered/${order._id}`, null, auth.token).then((res) => {
+      if (res.err)
+        return dispatch({ type: "NOTIFY", payload: { error: res.err } });
+      const { method, paid, delivered, deliveryDate } = res.result;
+      dispatch(
+        updateItem(
+          orders,
+          order._id,
+          { ...order, method, paid, delivered, deliveryDate },
+          "ADD_ORDERS"
+        )
+      );
+      return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
+    });
+  };
   return (
     <>
       {orderDetail.map((order) => (
@@ -30,10 +50,31 @@ const OrderDetail = ({ orderDetail }) => {
                 role="alert"
               >
                 {order.delivered
-                  ? `Delivered on ${order.updatedAt}`
+                  ? `Delievered on ${new Date(
+                      order.deliveryDate
+                    ).toLocaleDateString()}`
                   : "Not Delivered"}
+                {auth.user.role === "admin" && !order.delivered && (
+                  <button
+                    className="btn btn-dark text-uppercase"
+                    onClick={() => handleDelivered(order)}
+                  >
+                    mark as deliverd
+                  </button>
+                )}
               </div>
               <h3>Payment</h3>
+              {order.method && (
+                <h6>
+                  Method: <em>{order.method}</em>
+                </h6>
+              )}
+              {order.paymentId && (
+                <p>
+                  PaymentId: <em>{order.paymentId}</em>
+                </p>
+              )}
+
               <div
                 className={`alert ${
                   order.paid ? "alert-success" : "alert-danger"
@@ -41,7 +82,11 @@ const OrderDetail = ({ orderDetail }) => {
                 role="alert"
               >
                 {order.paid
-                  ? `Delivered on ${order.dateOfPayment}`
+                  ? `Paid on ${
+                      new Date(order.dateOfPayment).toDateString() +
+                      "  " +
+                      new Date(order.dateOfPayment).toLocaleTimeString()
+                    }`
                   : "Not Paid"}
               </div>
             </div>
@@ -72,10 +117,12 @@ const OrderDetail = ({ orderDetail }) => {
               ))}
             </div>
           </div>
-          <div className="p-4">
-            <h2 className="mb-4 textuppercase">Total: ${order.total}</h2>
-            <Pay total={order} />
-          </div>
+          {!order.paid && auth.user.role !== "admin" && (
+            <div className="p-4">
+              <h2 className="mb-4 textuppercase">Total: ${order.total}</h2>
+              <Pay order={order} />
+            </div>
+          )}
         </div>
       ))}
     </>
