@@ -1,13 +1,36 @@
 import React, { useContext } from "react";
 import { DataContext } from "../store/GlobalState";
 import { deleteItem } from "../store/Actions";
+import { deleteData } from "../utils/fetchData";
 
 function Modal() {
   const { state, dispatch } = useContext(DataContext);
-  const { modal } = state;
+  const { modal, auth } = state;
 
   const handleSubmit = () => {
-    dispatch(deleteItem(modal.data, modal.id, "ADD_CART"));
+    if (modal.type === "ADD_USERS") {
+      deleteData(`user/${modal.id}`, auth.token).then((res) => {
+        if (res.err) {
+          return dispatch({ type: "NOTIFY", payload: { error: res.err } });
+        }
+
+        dispatch(deleteItem(modal.data, modal.id, modal.type));
+        dispatch({ type: "ADD_MODAL", payload: {} });
+        dispatch({ type: "NOTIFY", payload: { success: res.msg } });
+      });
+    }
+    if (modal.type === "ADD_CATEGORIES") {
+      deleteData(`categories/${modal.id}`, auth.token).then((res) => {
+        if (res.err) {
+          return dispatch({ type: "NOTIFY", payload: { error: res.err } });
+        }
+
+        dispatch(deleteItem(modal.data, modal.id, modal.type));
+        dispatch({ type: "ADD_MODAL", payload: {} });
+        dispatch({ type: "NOTIFY", payload: { success: res.msg } });
+      });
+    }
+    dispatch(deleteItem(modal.data, modal.id, modal.type));
     dispatch({ type: "ADD_MODAL", payload: {} });
   };
 
@@ -45,7 +68,12 @@ function Modal() {
             >
               Yes
             </button>
-            <button type="button" className="btn btn-primary">
+            <button
+              type="button"
+              className="btn btn-primary"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               Cancel
             </button>
           </div>

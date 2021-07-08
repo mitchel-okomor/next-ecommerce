@@ -23,7 +23,7 @@ function Navbar() {
     localStorage.removeItem("firstLogin");
     dispatch({ type: "AUTH", payload: {} });
     dispatch({ type: "NOTIFY", payload: { success: "Logged out!" } });
-    router.push("/");
+    return router.push("/");
   };
 
   const adminRouter = () => {
@@ -32,7 +32,7 @@ function Navbar() {
         <Link href="/users">
           <a className="dropdown-item">Users</a>
         </Link>
-        <Link href="/create">
+        <Link href="/products">
           <a className="dropdown-item">Products</a>
         </Link>
         <Link href="/categories">

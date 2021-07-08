@@ -25,7 +25,7 @@ const getUsers = async (req, res) => {
     const users = await Users.find().select("-password");
     res.json({ users });
   } catch (err) {
-    return res.status(500).json({ err: err.message });
+    return res.status(500).json({ err: err.msg });
   }
 };
 
