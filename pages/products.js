@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { DataContext } from "../store/GlobalState";
 import { updateItem } from "../store/Actions";
 import { putData, postData } from "../utils/fetchData";
+import { imageUpload } from "../utils/ImageUpload";
 
 function Products() {
   const initialState = {
@@ -22,7 +23,7 @@ function Products() {
     product;
 
   const { state, dispatch } = useContext(DataContext);
-  const { categories } = state;
+  const { categories, auth } = state;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +36,6 @@ function Products() {
     let num = 0;
     let err = "";
     const files = [...e.target.files];
-    console.log(files);
     if (files.length === 0)
       return dispatch({
         type: "NOTIFY",
@@ -65,17 +65,58 @@ function Products() {
         type: "NOTIFY",
         payload: { error: "Only up to 5 images allowed" },
       });
-
-    setImages([...images, newImages]);
+    setImages([...images, ...newImages]);
   };
 
+  const deleteImage = (index) => {
+    const newArr = [...images];
+    newArr.splice(index, 1);
+    setImages(newArr);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (auth.user.role !== "admin")
+      return dispatch({ type: "NOTIFY", payload: { error: "Unauthorized" } });
+
+    if (
+      !product_id ||
+      !title ||
+      !price ||
+      !description ||
+      !content ||
+      category === "all" ||
+      !inStock ||
+      images.length === 0
+    )
+      return dispatch({
+        type: "NOTIFY",
+        payload: { error: "Please add all fields." },
+      });
+
+    dispatch({ type: "NOTIFY", payload: { loading: true } });
+    let media = [];
+    const imgNewURL = images.filter((img) => !img.url);
+    const imgOldURL = images.filter((img) => img.url);
+
+    if (imgNewURL.length > 0) media = await imageUpload(imgNewURL);
+    const res = await postData(
+      "product",
+      { ...product, images: [...imgOldURL, ...media] },
+      auth.token
+    );
+    if (res.err)
+      return dispatch({ type: "NOTIFY", payload: { error: res.err } });
+
+    return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
+  };
   return (
     <div className="products_manager">
       <Head>
         <title>Admin Products</title>
       </Head>
       <div>
-        <form className="row">
+        <form className="row" onSubmit={handleSubmit}>
           <div className="col-md-6">
             <input
               type="text"
@@ -95,22 +136,24 @@ function Products() {
             />
             <div className="row">
               <div className="col-md-6">
+                <label htmlFor="pricce">Price</label>
                 <input
                   type="number"
                   name="price"
                   value={price}
                   placeholder="Price"
-                  className="d-block my-4 w-100 p-2"
+                  className="d-block  w-100 p-2"
                   onChange={handleChange}
                 />
               </div>
               <div className="col-md-6">
+                <label htmlFor="inStock">InStock</label>
                 <input
                   type="number"
                   name="inStock"
                   value={inStock}
                   placeholder="In stock"
-                  className="d-block my-4 w-100 p-2"
+                  className="d-block  w-100 p-2"
                   onChange={handleChange}
                 />
               </div>
@@ -119,17 +162,21 @@ function Products() {
               name="description"
               id="description"
               cols="30"
+              value={description}
+              onChange={handleChange}
               rows="4"
               placeholder="Description"
-              className="d-block my-4 w-100 p-2"
+              className="d-block my-3 w-100 p-2"
             />
             <textarea
               name="content"
               id="content"
+              value={content}
+              onChange={handleChange}
               cols="30"
               rows="4"
               placeholder="Content"
-              className="d-block my-4 w-100 p-2"
+              className="d-block my-3 w-100 p-2"
             />
             <div className="input-group-prepend px-0 my-2">
               <select
@@ -167,13 +214,17 @@ function Products() {
                 <div className="input-group" key={index} className="file_img">
                   <img
                     src={img.url ? img.url : URL.createObjectURL(img)}
-                    alt={images.url}
+                    alt=""
                     className="img-thumbnail rounded"
                   />
+                  <span onClick={() => deleteImage(index)}>X</span>
                 </div>
               ))}
             </div>
           </div>
+          <button type="submit" className="btn btn-info my-1 mb-3 px-4 ml-3">
+            Create
+          </button>
         </form>
       </div>
     </div>
