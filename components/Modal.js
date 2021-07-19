@@ -1,85 +1,92 @@
-import React, { useContext } from "react";
-import { DataContext } from "../store/GlobalState";
-import { deleteItem } from "../store/Actions";
-import { deleteData } from "../utils/fetchData";
+import React, { useContext } from 'react';
+import { DataContext } from '../store/GlobalState';
+import { deleteItem } from '../store/Actions';
+import { deleteData } from '../utils/fetchData';
 
 function Modal() {
   const { state, dispatch } = useContext(DataContext);
   const { modal, auth } = state;
 
+  const deleteUser = (itme) => {
+    deleteData(`user/${itme.id}`, auth.token).then((res) => {
+      if (res.err) {
+        return dispatch({ type: 'NOTIFY', payload: { error: res.err } });
+      }
+
+      dispatch(deleteItem(itme.data, itme.id, itme.type));
+      dispatch({ type: 'ADD_MODAL', payload: [{}] });
+      dispatch({ type: 'NOTIFY', payload: { success: res.msg } });
+    });
+  };
+  const deleteCategory = (itme) => {
+    deleteData(`categories/${itme.id}`, auth.token).then((res) => {
+      if (res.err) {
+        return dispatch({ type: 'NOTIFY', payload: { error: res.err } });
+      }
+
+      dispatch(deleteItem(itme.data, itme.id, itme.type));
+      dispatch({ type: 'ADD_MODAL', payload: [{}] });
+      dispatch({ type: 'NOTIFY', payload: { success: res.msg } });
+    });
+  };
+  const deleteProduct = (itme) => {
+    dispatch({ type: 'NOTIFY', payload: { loading: true } });
+    deleteData(`product/${itme.id}`, auth.token).then((res) => {
+      if (res.err)
+        return dispatch({ type: 'NOTIFY', payload: { error: res.err } });
+      return dispatch({ type: 'NOTIFY', payload: { success: res.msg } });
+    });
+  };
   const handleSubmit = () => {
-    if (modal.type === "ADD_USERS") {
-      deleteData(`user/${modal.id}`, auth.token).then((res) => {
-        if (res.err) {
-          return dispatch({ type: "NOTIFY", payload: { error: res.err } });
-        }
-
-        dispatch(deleteItem(modal.data, modal.id, modal.type));
-        dispatch({ type: "ADD_MODAL", payload: {} });
-        dispatch({ type: "NOTIFY", payload: { success: res.msg } });
-      });
+    if (modal.length !== 0) {
+      for (const itme of modal) {
+        if (itme.type === 'ADD_USERS') deleteUser(itme);
+        if (itme.type === 'ADD_CATEGORIES') deleteCategory(itme);
+        if (itme.type === 'DELETE_PRODUCT') deleteProduct(itme);
+        if (itme.type === '') dispatch({ type: 'ADD_MODAL', payload: [] });
+      }
     }
-    if (modal.type === "ADD_CATEGORIES") {
-      deleteData(`categories/${modal.id}`, auth.token).then((res) => {
-        if (res.err) {
-          return dispatch({ type: "NOTIFY", payload: { error: res.err } });
-        }
-
-        dispatch(deleteItem(modal.data, modal.id, modal.type));
-        dispatch({ type: "ADD_MODAL", payload: {} });
-        dispatch({ type: "NOTIFY", payload: { success: res.msg } });
-      });
-    }
-    if (modal.type === "DELETE_PRODUCT") {
-      dispatch({ type: "NOTIFY", payload: { loading: true } });
-      deleteData(`product/${modal.id}`, auth.token).then((res) => {
-        if (res.err)
-          return dispatch({ type: "NOTIFY", payload: { error: res.err } });
-        return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
-      });
-    }
-    dispatch({ type: "ADD_MODAL", payload: {} });
   };
 
   return (
     <div
-      className="modal fade"
-      id="exampleModal"
-      tabIndex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
+      className='modal fade'
+      id='exampleModal'
+      tabIndex='-1'
+      role='dialog'
+      aria-labelledby='exampleModalLabel'
+      aria-hidden='true'
     >
-      <div className="modal-dialog" role="document">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title text-capitalize" id="exampleModalLabel">
-              {modal.title}
+      <div className='modal-dialog' role='document'>
+        <div className='modal-content'>
+          <div className='modal-header'>
+            <h5 className='modal-title text-capitalize' id='exampleModalLabel'>
+              {modal.length !== 0 && modal[0].title}
             </h5>
             <button
-              type="button"
-              className="close"
-              data-dismiss="modal"
-              aria-label="Close"
+              type='button'
+              className='close'
+              data-dismiss='modal'
+              aria-label='Close'
             >
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden='true'>&times;</span>
             </button>
           </div>
-          <div className="modal-body">Do you want to delete this item?</div>
-          <div className="modal-footer">
+          <div className='modal-body'>Do you want to delete this item?</div>
+          <div className='modal-footer'>
             <button
-              type="button"
-              className="btn btn-secondary"
-              data-dismiss="modal"
+              type='button'
+              className='btn btn-secondary'
+              data-dismiss='modal'
               onClick={handleSubmit}
             >
               Yes
             </button>
             <button
-              type="button"
-              className="btn btn-primary"
-              data-dismiss="modal"
-              aria-label="Close"
+              type='button'
+              className='btn btn-primary'
+              data-dismiss='modal'
+              aria-label='Close'
             >
               Cancel
             </button>

@@ -143,6 +143,7 @@ function Create() {
       <Head>
         <title>Admin Products</title>
       </Head>
+
       <div>
         <form className='row' onSubmit={handleSubmit}>
           <div className='col-md-6'>
