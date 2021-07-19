@@ -1,19 +1,10 @@
 import connectDB from "../../../utils/connectDB";
 import Products from "../../../models/productModel";
-import auth from "../../../middleware/auth";
+import { auth } from "../../../middleware/auth";
 
 connectDB();
 
 export default async (req, res) => {
-  switch (req.method) {
-    case "GET":
-      await getProduct(req, res);
-      break;
-    case "PUT":
-      await updateProduct(req, res);
-      break;
-  }
-
   const getProduct = async (req, res) => {
     const { id } = req.query;
     try {
@@ -35,19 +26,10 @@ export default async (req, res) => {
       if (result.role !== "admin")
         return res.status(500).json({ err: "Unauthorized" });
       const { id } = req.query;
-      const {
-        product_id,
-        title,
-        price,
-        description,
-        content,
-        category,
-        inStock,
-        images,
-      } = req.body;
+      const { title, price, description, content, category, inStock, images } =
+        req.body;
 
       if (
-        !product_id ||
         !title ||
         !price ||
         !description ||
@@ -61,7 +43,6 @@ export default async (req, res) => {
       await Products.findOneAndUpdate(
         { _id: id },
         {
-          product_id,
           title,
           price,
           description,
@@ -78,4 +59,32 @@ export default async (req, res) => {
       return res.status(500).json({ err: err.message });
     }
   };
+
+  const deleteProduct = async (req, res) => {
+    try {
+      const result = await auth(req, res);
+      if (result.role !== "admin")
+        return res.status(500).json({ err: "Unauthorized" });
+      const { id } = req.query;
+
+      await Products.findByIdAndDelete(id);
+      res.json({
+        msg: "deleted successfully",
+      });
+    } catch (err) {
+      return res.status(500).json({ err: err.message });
+    }
+  };
+
+  switch (req.method) {
+    case "GET":
+      await getProduct(req, res);
+      break;
+    case "PUT":
+      await updateProduct(req, res);
+      break;
+    case "DELETE":
+      await deleteProduct(req, res);
+      break;
+  }
 };

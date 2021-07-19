@@ -6,11 +6,12 @@ import Link from "next/link";
 
 function ProductItem({ product }) {
   const { state, dispatch } = useContext(DataContext);
-  const { cart } = state;
+  const { cart, auth, products } = state;
 
   const userLink = () => {
     return (
       <>
+        yarn
         <Link href={`product/${product._id}`}>
           <a className="btn btn-info" style={{ marginRight: "5px", flex: 1 }}>
             View
@@ -29,6 +30,39 @@ function ProductItem({ product }) {
       </>
     );
   };
+
+  const adminLink = () => {
+    return (
+      <>
+        <Link href={`create/${product._id}`}>
+          <a className="btn btn-info" style={{ marginRight: "5px", flex: 1 }}>
+            Edit
+          </a>
+        </Link>
+        <button
+          className="btn btn-danger"
+          style={{ marginLeft: "5px", flex: 1 }}
+          data-toggle="modal"
+          data-target="#exampleModal"
+          onClick={() =>
+            dispatch({
+              type: "ADD_MODAL",
+              payload: {
+                data: "",
+                id: product._id,
+                title: product.title,
+                type: "DELETE_PRODUCT",
+              },
+            })
+          }
+        >
+          Delete
+        </button>
+      </>
+    );
+  };
+
+  if (!auth.user) return null;
   return (
     <div className="card " style={{ width: "18rem" }}>
       <img className="card-img-top" src={product.images[0].url} alt="prodcut" />
@@ -45,7 +79,9 @@ function ProductItem({ product }) {
           )}
         </div>
         <p className="card-text">{product.description}</p>
-        <div className="row justify-content-between mx-0">{userLink()}</div>
+        <div className="row justify-content-between mx-0">
+          {auth.user.role === "admin" ? adminLink() : userLink()}
+        </div>
       </div>
     </div>
   );

@@ -7,16 +7,19 @@ import ProductItem from "../components/ProductItem";
 export default function Home(props) {
   const [products, setProducts] = useState(props.products);
   return (
-    <div className="products">
+    <div>
       <Head>
         <title>Home</title>
       </Head>
+
       {products.length === 0 ? (
         <h2>No Products</h2>
       ) : (
-        products.map((product) => {
-          return <ProductItem key={product._id} product={product} />;
-        })
+        <div className="products">
+          {products.map((product) => {
+            return <ProductItem key={product._id} product={product} />;
+          })}
+        </div>
       )}
     </div>
   );
