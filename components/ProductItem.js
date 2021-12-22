@@ -11,7 +11,6 @@ function ProductItem({ product, handleCheck }) {
   const userLink = () => {
     return (
       <>
-        yarn
         <Link href={`product/${product._id}`}>
           <a className='btn btn-info' style={{ marginRight: '5px', flex: 1 }}>
             View
@@ -64,9 +63,43 @@ function ProductItem({ product, handleCheck }) {
     );
   };
 
-  if (!auth.user) return null;
+  if (!auth.user)
+    return (
+      <div className='card  col-md-3 m-3 p-2'>
+        <img
+          className='card-img-top'
+          src={product.images[0].url}
+          alt='prodcut'
+          style={{ height: '150px', objectFit: 'cover' }}
+        />
+        <div className='card-body'>
+          <h5 className='card-title text-capitalise' title={product.title}>
+            {product.title}
+          </h5>
+          <div className='row justify-content-between mx-0'>
+            <h6 className='text-danger'>${product.price}</h6>
+            {product.inStock > 0 ? (
+              <h6 className='text-danger'>In Stock: {product.inStock}</h6>
+            ) : (
+              <h6 className='text-danger'>Out of Stck</h6>
+            )}
+          </div>
+          <p
+            className='card-text'
+            style={{
+              height: '5rem',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden'
+            }}
+          >
+            {product.description}
+          </p>
+          <div className='row justify-content-between mx-0'>{userLink()}</div>
+        </div>
+      </div>
+    );
   return (
-    <div className='card ' style={{ width: '18rem' }}>
+    <div className='card  col-md-3 m-3 p-2'>
       {auth.user.role === 'admin' && (
         <input
           type='checkbox'
@@ -76,7 +109,12 @@ function ProductItem({ product, handleCheck }) {
           style={{ height: '30px', width: '30px' }}
         />
       )}
-      <img className='card-img-top' src={product.images[0].url} alt='prodcut' />
+      <img
+        className='card-img-top'
+        src={product.images[0].url}
+        alt='prodcut'
+        style={{ height: '150px', objectFit: 'cover' }}
+      />
       <div className='card-body'>
         <h5 className='card-title text-capitalise' title={product.title}>
           {product.title}
@@ -89,7 +127,16 @@ function ProductItem({ product, handleCheck }) {
             <h6 className='text-danger'>Out of Stck</h6>
           )}
         </div>
-        <p className='card-text'>{product.description}</p>
+        <p
+          className='card-text'
+          style={{
+            height: '5rem',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden'
+          }}
+        >
+          {product.description}
+        </p>
         <div className='row justify-content-between mx-0'>
           {auth.user.role === 'admin' ? adminLink() : userLink()}
         </div>

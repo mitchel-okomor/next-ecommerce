@@ -31,22 +31,24 @@ export const DataProvider = ({ children }) => {
             user: res.user
           }
         });
-        getData('categories', res.access_token).then((res) => {
-          if (res.err)
-            return dispatch({
-              type: 'NOTIFY',
-              payload: {
-                err: res.error
-              }
-            });
-          dispatch({
-            type: 'ADD_CATEGORIES',
-            payload: res.categories
-          });
-        });
       });
     }
-  }, []);
+
+    //get categories
+    getData('categories', auth.token).then((res) => {
+      if (res.err)
+        return dispatch({
+          type: 'NOTIFY',
+          payload: {
+            err: res.error
+          }
+        });
+      dispatch({
+        type: 'ADD_CATEGORIES',
+        payload: res.categories
+      });
+    });
+  }, [auth.token]);
 
   //get cart from local storage
   useEffect(() => {

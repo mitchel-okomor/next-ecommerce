@@ -1,3 +1,10 @@
+:root {
+  --green: #27ae60;
+  --black: #192a56;
+  --light-color: #666;
+  --box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
 html,
 body {
   padding: 0;
@@ -18,14 +25,22 @@ img {
   object-fit: cover;
   object-position: 0 2px;
 }
+@media (min-width: 600px) {
+  body {
+    margin-top: 5rem;
+  }
+}
+
 /* -------------- Loading ----------- */
-@import url("./loading.css");
+@import url('./navbar.css');
+/* -------------- Loading ----------- */
+@import url('./loading.css');
 
 /* -------------- Product ----------- */
-@import url("./product.css");
+@import url('./product.css');
 
 /* -------------- Profile ----------- */
-@import url("./profile.css");
+@import url('./profile.css');
 
 /* -------------- Admin product ----------- */
-@import url("./product_manager.css");
+@import url('./product_manager.css');

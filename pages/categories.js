@@ -1,8 +1,8 @@
 import Head from 'next/head';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { DataContext } from '../store/GlobalState';
 import { updateItem } from '../store/Actions';
-import { putData, postData } from '../utils/fetchData';
+import { putData, postData, getData } from '../utils/fetchData';
 
 function Categories() {
   const [name, setName] = useState('');
@@ -46,6 +46,23 @@ function Categories() {
     setName(category.name);
     setId(category._id);
   };
+
+  useEffect(() => {
+    getData('categories', auth.token).then((res) => {
+      console.log(res);
+      if (res.err)
+        return dispatch({
+          type: 'NOTIFY',
+          payload: {
+            err: res.error
+          }
+        });
+      dispatch({
+        type: 'ADD_CATEGORIES',
+        payload: res.categories
+      });
+    });
+  }, []);
 
   return (
     <div className='col-md-6 mx-auto my-3'>

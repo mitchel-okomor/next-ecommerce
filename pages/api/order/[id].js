@@ -1,14 +1,14 @@
-import connectDB from "../../../utils/connectDB";
-import Orders from "../../../models/orderModel";
-import { auth } from "../../../middleware/auth";
-import Payments from "../../../models/payment";
+import connectDB from '../../../utils/connectDB';
+import Orders from '../../../models/orderModel';
+import { auth } from '../../../middleware/auth';
+import Payments from '../../../models/payment';
 
 connectDB();
 
 //routes
 export default async (req, res) => {
   switch (req.method) {
-    case "POST":
+    case 'POST':
       await orderPayment(req, res);
       break;
   }
@@ -45,13 +45,13 @@ const orderPayment = async (req, res) => {
       status,
       trans,
       transaction,
-      trxref,
+      trxref
     });
 
     await newPayment.save();
     await updateOrder(id, trxref);
     res.json({
-      msg: " Payment successful",
+      msg: ' Payment successful'
     });
   } catch (err) {
     return res.status(500).json({ err: err.message });
@@ -65,7 +65,7 @@ const updateOrder = async (id, trxref) => {
       paid: true,
       dateOfPayment: new Date().toISOString(),
       paymentId: trxref,
-      method: "Card",
+      method: 'Card'
     },
     function (err, docs) {
       if (err) {

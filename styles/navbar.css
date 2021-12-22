@@ -1,0 +1,11 @@
+@media (min-width: 600px) {
+  .top-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: white;
+    box-shadow: var(--box-shadow);
+  }
+}

@@ -1,14 +1,14 @@
-import connectDB from "../../../utils/connectDB";
-import Users from "../../../models/userModel";
-import { auth } from "../../../middleware/auth";
+import connectDB from '../../../utils/connectDB';
+import Users from '../../../models/userModel';
+import { auth } from '../../../middleware/auth';
 
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
 
 connectDB();
 
 export default async (req, res) => {
   switch (req.method) {
-    case "PATCH":
+    case 'PATCH':
       await resetPassword(req, res);
       break;
   }
@@ -25,7 +25,7 @@ const resetPassword = async (req, res) => {
       { password: passwordHash },
       (err, data) => {
         if (err) console.log(err);
-        res.json({ msg: "Update Successful!" });
+        res.json({ msg: 'Update Successful!' });
       }
     );
   } catch (err) {

@@ -40,6 +40,8 @@ function Modal() {
   const handleSubmit = () => {
     if (modal.length !== 0) {
       for (const itme of modal) {
+        if (itme.type === 'ADD_CART')
+          dispatch(deleteItem(itme.data, itme.id, itme.type));
         if (itme.type === 'ADD_USERS') deleteUser(itme);
         if (itme.type === 'ADD_CATEGORIES') deleteCategory(itme);
         if (itme.type === 'DELETE_PRODUCT') deleteProduct(itme);

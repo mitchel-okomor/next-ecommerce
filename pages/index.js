@@ -54,7 +54,7 @@ export default function Home(props) {
       <Head>
         <title>Home</title>
       </Head>
-      {auth?.user?.role === 'admin' && (
+      {auth?.user?.role === 'admin' && products?.length > 0 && (
         <div
           className='delete_all_btn btn btn-danger my-2'
           style={{ marginBottom: '-10px' }}
@@ -79,28 +79,31 @@ export default function Home(props) {
           </button>
         </div>
       )}
-      {products.length === 0 ? (
-        <h2>No Products</h2>
-      ) : (
-        products.map((product) => {
-          return (
-            <ProductItem
-              key={product._id}
-              product={product}
-              handleCheck={handleCheck}
-            />
-          );
-        })
-      )}
+      <div className='row'>
+        {products?.length === 0 ? (
+          <h2>No Products</h2>
+        ) : (
+          products?.map((product) => {
+            return (
+              <ProductItem
+                key={product._id}
+                product={product}
+                handleCheck={handleCheck}
+              />
+            );
+          })
+        )}
+      </div>
     </div>
   );
 }
 export async function getServerSideProps() {
   const res = await getData('product');
+  console.log(res);
   return {
     props: {
-      products: res.products,
-      result: res.result
+      products: res?.products,
+      result: res?.result
     }
   };
 }
