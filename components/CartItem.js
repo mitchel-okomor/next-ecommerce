@@ -11,9 +11,8 @@ function CartItem({ item, dispatch, cart }) {
           src={item.images[0].url}
           alt={item.images[0].url}
           className='img-thumnail w-100'
-          style={{ minWidth: '200px' }}
-          width={200}
-          height={200}
+          width={300}
+          height={250}
         />
       </td>
       <td style={{ minWidth: '200px' }} className='w-50 align-middle'>
