@@ -66,7 +66,7 @@ function Navbar() {
             <Link href='/cart'>
               <a className={'nav-link' + isActive('/cart')}>
                 <i
-                  className='fas fa-shopping-cart position-relative'
+                  className='fa fa-shopping-cart position-relative'
                   aria-hidden='true'
                 >
                   <span
@@ -91,7 +91,7 @@ function Navbar() {
             <li className='nav-item'>
               <Link href='/signin'>
                 <a className={'nav-link' + isActive('/signin')}>
-                  <i className='fas fa-user' aria-hidden='true'></i>Sign in
+                  <i className='fa fa-user' aria-hidden='true'></i>Sign in
                 </a>
               </Link>
             </li>
