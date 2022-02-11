@@ -44,3 +44,5 @@ img {
 
 /* -------------- Admin product ----------- */
 @import url('./product_manager.css');
+
+@import url('./Home.module.css');

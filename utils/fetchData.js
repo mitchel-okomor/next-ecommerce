@@ -7,7 +7,6 @@ export const getData = async (url, token) => {
       Authorization: token
     }
   });
-  console.log(res);
   const data = await res.json();
   return data;
 };

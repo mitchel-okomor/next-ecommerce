@@ -65,15 +65,18 @@ function ProductItem({ product, handleCheck }) {
 
   if (!auth.user)
     return (
-      <div className='card  col-md-3 m-3 p-2'>
-        <img
-          className='card-img-top'
-          src={product.images[0].url}
-          alt='prodcut'
-          style={{ height: '150px', objectFit: 'cover' }}
-        />
+      <div className='product-item card  col-md-3 m-3 p-2'>
+        <div className='d-flex justify-content-center'>
+          <img
+            className='card-img-top'
+            src={product.images[0].url}
+            alt='prodcut'
+            style={{ height: '200px', objectFit: 'fill' }}
+          />
+        </div>
+
         <div className='card-body'>
-          <h5 className='card-title text-capitalise' title={product.title}>
+          <h5 className='card-title text-capitalize' title={product.title}>
             {product.title}
           </h5>
           <div className='row justify-content-between mx-0'>
@@ -84,16 +87,7 @@ function ProductItem({ product, handleCheck }) {
               <h6 className='text-danger'>Out of Stck</h6>
             )}
           </div>
-          <p
-            className='card-text'
-            style={{
-              height: '5rem',
-              textOverflow: 'ellipsis',
-              overflow: 'hidden'
-            }}
-          >
-            {product.description}
-          </p>
+
           <div className='row justify-content-between mx-0'>{userLink()}</div>
         </div>
       </div>
@@ -113,10 +107,13 @@ function ProductItem({ product, handleCheck }) {
         className='card-img-top'
         src={product.images[0].url}
         alt='prodcut'
-        style={{ height: '150px', objectFit: 'cover' }}
+        style={{
+          height: '150px',
+          objectFit: 'fill'
+        }}
       />
       <div className='card-body'>
-        <h5 className='card-title text-capitalise' title={product.title}>
+        <h5 className='card-title text-capitalize' title={product.title}>
           {product.title}
         </h5>
         <div className='row justify-content-between mx-0'>

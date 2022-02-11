@@ -7,31 +7,31 @@ function Modal() {
   const { state, dispatch } = useContext(DataContext);
   const { modal, auth } = state;
 
-  const deleteUser = (itme) => {
-    deleteData(`user/${itme.id}`, auth.token).then((res) => {
+  const deleteUser = (item) => {
+    deleteData(`user/${item.id}`, auth.token).then((res) => {
       if (res.err) {
         return dispatch({ type: 'NOTIFY', payload: { error: res.err } });
       }
 
-      dispatch(deleteItem(itme.data, itme.id, itme.type));
+      dispatch(deleteItem(item.data, item.id, item.type));
       dispatch({ type: 'ADD_MODAL', payload: [{}] });
       dispatch({ type: 'NOTIFY', payload: { success: res.msg } });
     });
   };
-  const deleteCategory = (itme) => {
-    deleteData(`categories/${itme.id}`, auth.token).then((res) => {
+  const deleteCategory = (item) => {
+    deleteData(`categories/${item.id}`, auth.token).then((res) => {
       if (res.err) {
         return dispatch({ type: 'NOTIFY', payload: { error: res.err } });
       }
 
-      dispatch(deleteItem(itme.data, itme.id, itme.type));
+      dispatch(deleteItem(item.data, item.id, item.type));
       dispatch({ type: 'ADD_MODAL', payload: [{}] });
       dispatch({ type: 'NOTIFY', payload: { success: res.msg } });
     });
   };
-  const deleteProduct = (itme) => {
+  const deleteProduct = (item) => {
     dispatch({ type: 'NOTIFY', payload: { loading: true } });
-    deleteData(`product/${itme.id}`, auth.token).then((res) => {
+    deleteData(`product/${item.id}`, auth.token).then((res) => {
       if (res.err)
         return dispatch({ type: 'NOTIFY', payload: { error: res.err } });
       return dispatch({ type: 'NOTIFY', payload: { success: res.msg } });
@@ -39,13 +39,13 @@ function Modal() {
   };
   const handleSubmit = () => {
     if (modal.length !== 0) {
-      for (const itme of modal) {
-        if (itme.type === 'ADD_CART')
-          dispatch(deleteItem(itme.data, itme.id, itme.type));
-        if (itme.type === 'ADD_USERS') deleteUser(itme);
-        if (itme.type === 'ADD_CATEGORIES') deleteCategory(itme);
-        if (itme.type === 'DELETE_PRODUCT') deleteProduct(itme);
-        if (itme.type === '') dispatch({ type: 'ADD_MODAL', payload: [] });
+      for (const item of modal) {
+        if (item.type === 'ADD_CART')
+          dispatch(deleteItem(item.data, item.id, item.type));
+        if (item.type === 'ADD_USERS') deleteUser(item);
+        if (item.type === 'ADD_CATEGORIES') deleteCategory(item);
+        if (item.type === 'DELETE_PRODUCT') deleteProduct(item);
+        if (item.type === '') dispatch({ type: 'ADD_MODAL', payload: [] });
       }
     }
   };

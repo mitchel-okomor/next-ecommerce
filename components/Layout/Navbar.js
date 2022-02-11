@@ -44,7 +44,7 @@ function Navbar() {
   return (
     <nav className='top-navbar navbar navbar-expand-lg navbar-light '>
       <a className='navbar-brand' href='/'>
-        Logo
+        <img src={'/logo.png'} alt='Logo' style={{ width: '20%' }} />
       </a>
       <button
         className='navbar-toggler'

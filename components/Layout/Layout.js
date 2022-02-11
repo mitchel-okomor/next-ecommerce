@@ -1,11 +1,11 @@
-import React from "react";
-import Navbar from "./Navbar";
-import Notify from "../Notify";
-import Modal from "../Modal";
+import React from 'react';
+import Navbar from './Navbar';
+import Notify from '../Notify';
+import Modal from '../Modal';
 
 function Layout({ children }) {
   return (
-    <div className="container">
+    <div className='container-fluid'>
       <Navbar />
       <Notify />
       <Modal />

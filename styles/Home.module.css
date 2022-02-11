@@ -78,7 +78,7 @@
   margin-top: 3rem;
 }
 
-.card {
+.product-item.card {
   margin: 1rem;
   padding: 1.5rem;
   text-align: left;
@@ -87,22 +87,22 @@
   border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
-  width: 45%;
+  width: 40%;
 }
 
-.card:hover,
-.card:focus,
-.card:active {
+.product-item.card:hover,
+.product-item.card:focus,
+.product-item.card:active {
   color: #0070f3;
   border-color: #0070f3;
 }
 
-.card h2 {
+.product-item.card h2 {
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
 }
 
-.card p {
+.product-item.card p {
   margin: 0;
   font-size: 1.25rem;
   line-height: 1.5;
@@ -113,9 +113,37 @@
   margin-left: 0.5rem;
 }
 
+.home-categories ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+.home-categories ul > li {
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+}
+
+.home-categories ul > li:hover {
+  background-color: rgb(216, 216, 216);
+}
+
+.search input {
+  width: 40%;
+}
+
+.large-image {
+  height: 20px;
+}
+.large-image img {
+  width: 100%;
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;
     flex-direction: column;
+  }
+  .search input {
+    width: 100%;
   }
 }

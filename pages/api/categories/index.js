@@ -35,10 +35,6 @@ const createCategory = async (req, res) => {
 
 const getCategories = async (req, res) => {
   try {
-    const result = await auth(req, res);
-    if (result.role !== 'admin')
-      return res.status(401).json({ err: 'Unauthorized' });
-
     const categories = await Category.find();
     res.json({ categories });
   } catch (err) {
