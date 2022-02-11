@@ -17,7 +17,9 @@ module.exports = {
     DB_USER: 'root',
     DB_PASS: 'password'
   },
-
+  images: {
+    domains: ['res.cloudinary.com']
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) config.resolve.fallback = { fs: false };
     return config;

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { DataContext } from '../store/GlobalState';
 import { addToCart } from '../store/Actions';
+import Image from 'next/image';
 
 import Link from 'next/link';
 
@@ -66,14 +67,14 @@ function ProductItem({ product, handleCheck }) {
   if (!auth.user)
     return (
       <div className='product-item card  col-md-3 m-3 p-2'>
-        <div className='d-flex justify-content-center'>
-          <img
-            className='card-img-top'
-            src={product.images[0].url}
-            alt='prodcut'
-            style={{ height: '200px', objectFit: 'fill' }}
-          />
-        </div>
+        <Image
+          className='card-img-top'
+          src={product.images[0].url}
+          alt='prodcut'
+          style={{ objectFit: 'fill' }}
+          width={100}
+          height={200}
+        />
 
         <div className='card-body'>
           <h5 className='card-title text-capitalize' title={product.title}>
@@ -103,15 +104,18 @@ function ProductItem({ product, handleCheck }) {
           style={{ height: '30px', width: '30px' }}
         />
       )}
-      <img
+      <Image
         className='card-img-top'
         src={product.images[0].url}
         alt='prodcut'
         style={{
-          height: '150px',
           objectFit: 'fill'
         }}
+        layout='fill'
+        width={100}
+        height={200}
       />
+
       <div className='card-body'>
         <h5 className='card-title text-capitalize' title={product.title}>
           {product.title}

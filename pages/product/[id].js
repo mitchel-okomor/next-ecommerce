@@ -33,18 +33,21 @@ function DetailProduct(props) {
       </Head>
       <div className='row'>
         <div className=' col-md-6 '>
-          <img
+          <Image
             src={product.images[tab].url}
             alt={product.images[tab].url}
             className='d-block img-thumbnail rounded mt-4 w-100 '
             style={{ height: '350px', objectFit: 'scale-down' }}
+            width={500}
+            height={500}
+            layout='fill'
           />
           <div
             className='row mx-0 my-2'
             // ref={imgRef}
           >
             {product.images.map((img, index) => (
-              <img
+              <Image
                 key={index}
                 src={img.url}
                 alt={img.url}
@@ -56,6 +59,9 @@ function DetailProduct(props) {
                   objectFit: 'contain'
                 }}
                 onClick={() => setTab(index)}
+                width={500}
+                height={500}
+                layout='fill'
               />
             ))}
           </div>
