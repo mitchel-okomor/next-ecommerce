@@ -232,7 +232,7 @@ function Create() {
             </div>
             <div className='row img-up'>
               {images.map((img, index) => (
-                <div className='input-group' key={index} className='file_img'>
+                <div className='input-group file_img' key={index}>
                   <img
                     src={img.url ? img.url : URL.createObjectURL(img)}
                     alt=''

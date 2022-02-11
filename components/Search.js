@@ -4,7 +4,7 @@ function Search({ searchItems }) {
   return (
     <div className='search d-flex justify-content-center'>
       <input
-        class='form-control mr-sm-2'
+        className='form-control mr-sm-2'
         aria-label='Search'
         type='search'
         placeholder='Search..'
