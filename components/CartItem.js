@@ -1,16 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
 import { increase, decrease } from '../store/Actions';
+import Image from 'next/image';
 
 function CartItem({ item, dispatch, cart }) {
   return (
     <tr>
       <td>
-        <img
+        <Image
           src={item.images[0].url}
           alt={item.images[0].url}
           className='img-thumnail w-100'
           style={{ minWidth: '200px' }}
+          width={200}
+          height={200}
         />
       </td>
       <td style={{ minWidth: '200px' }} className='w-50 align-middle'>
@@ -20,7 +23,7 @@ function CartItem({ item, dispatch, cart }) {
         <h6 className='text-danger'>${item.quantity * item.price}</h6>
         <h6>
           {item.inStock > 0 ? (
-            <p className='mb-1 text-danger'>In Stock: {item.inStock}</p>
+            <p className='mb-1 text-primary'>In Stock: {item.inStock}</p>
           ) : (
             <p className='mb-1 text-danger'>out of Stock{item.inStock}</p>
           )}

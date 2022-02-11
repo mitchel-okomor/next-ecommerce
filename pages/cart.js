@@ -129,7 +129,6 @@ function Cart() {
                 dispatch={dispatch}
                 cart={cart}
                 state={state}
-                dispatch={dispatch}
                 auth={auth}
               />
             ))}
