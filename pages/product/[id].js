@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { getData } from '../../utils/fetchData';
 import { DataContext } from '../../store/GlobalState';
 import { addToCart } from '../../store/Actions';
+import Image from 'next/image';
 
 function DetailProduct(props) {
   const { state, dispatch } = useContext(DataContext);
