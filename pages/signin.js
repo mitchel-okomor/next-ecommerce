@@ -87,7 +87,7 @@ function Signin() {
             Login
           </button>
           <p className='my-2'>
-            You don't have an account?
+            You don&apos;t have an account?
             <Link href='/register'>
               <a style={{ color: 'crimson' }}>Register</a>
             </Link>
