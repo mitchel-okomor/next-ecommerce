@@ -146,4 +146,7 @@
   .search input {
     width: 100%;
   }
+  .product-item.card {
+    width: 100%;
+  }
 }
