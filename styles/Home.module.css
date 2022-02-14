@@ -109,8 +109,7 @@
 }
 
 .logo {
-  height: 1em;
-  margin-left: 0.5rem;
+  width: 5%;
 }
 
 .home-categories ul {
@@ -148,5 +147,8 @@
   }
   .product-item.card {
     width: 100%;
+  }
+  .logo {
+    width: 10%;
   }
 }
