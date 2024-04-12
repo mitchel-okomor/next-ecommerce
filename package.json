@@ -3,13 +3,14 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "next dev",
+		"dev": "cross-env NODE_OPTIONS='--openssl-legacy-provider' next dev",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint"
 	},
 	"dependencies": {
 		"bcrypt": "^5.0.1",
+		"cross-env": "^7.0.3",
 		"js-cookie": "^2.2.1",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^5.12.14",

@@ -1,6 +1,6 @@
-import connectDB from '../../../utils/connectDB';
-import Products from '../../../models/productModel';
-import { auth } from '../../../middleware/auth';
+import connectDB from "../../../utils/connectDB";
+import Products from "../../../models/productModel";
+import { auth } from "../../../middleware/auth";
 
 connectDB();
 
@@ -8,10 +8,11 @@ export default async (req, res) => {
   const getProducts = async (req, res) => {
     try {
       const products = await Products.find();
+      console.log("products: ", products);
       res.json({
-        status: 'success',
+        status: "success",
         result: products.length,
-        products
+        products,
       });
     } catch (err) {
       return res.status(500).json({ err: err.message });
@@ -21,8 +22,8 @@ export default async (req, res) => {
   const createProduct = async (req, res) => {
     try {
       const result = await auth(req, res);
-      if (result.role !== 'admin')
-        return res.status(500).json({ err: 'Unauthorized' });
+      if (result.role !== "admin")
+        return res.status(500).json({ err: "Unauthorized" });
       const { title, price, description, content, category, inStock, images } =
         req.body;
 
@@ -31,11 +32,11 @@ export default async (req, res) => {
         !price ||
         !description ||
         !content ||
-        category === 'all' ||
+        category === "all" ||
         !inStock ||
         images.length === 0
       )
-        return res.status(400).json({ err: 'Please add all fields' });
+        return res.status(400).json({ err: "Please add all fields" });
 
       const newProduct = new Products({
         title: title.toLowerCase(),
@@ -44,12 +45,12 @@ export default async (req, res) => {
         content,
         category,
         inStock,
-        images
+        images,
       });
 
       await newProduct.save();
       res.json({
-        msg: 'Created successfully'
+        msg: "Created successfully",
       });
     } catch (err) {
       return res.status(500).json({ err: err.message });
@@ -57,10 +58,10 @@ export default async (req, res) => {
   };
 
   switch (req.method) {
-    case 'GET':
+    case "GET":
       await getProducts(req, res);
       break;
-    case 'POST':
+    case "POST":
       await createProduct(req, res);
       break;
   }

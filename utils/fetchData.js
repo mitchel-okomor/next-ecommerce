@@ -2,23 +2,24 @@ const baseURl = process.env.BASE_URL;
 
 export const getData = async (url, token) => {
   const res = await fetch(`${baseURl}/api/${url}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      Authorization: token
-    }
+      Authorization: token,
+    },
   });
+  console.log("res: ", res);
   const data = await res.json();
   return data;
 };
 
 export const postData = async (url, body, token) => {
   const res = await fetch(`${baseURl}/api/${url}`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: token
+      "Content-Type": "application/json",
+      Authorization: token,
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   });
 
   const data = await res.json();
@@ -27,12 +28,12 @@ export const postData = async (url, body, token) => {
 
 export const putData = async (url, body, token) => {
   const res = await fetch(`${baseURl}/api/${url}`, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: token
+      "Content-Type": "application/json",
+      Authorization: token,
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   });
 
   const data = await res.json();
@@ -41,12 +42,12 @@ export const putData = async (url, body, token) => {
 
 export const patchData = async (url, body, token) => {
   const res = await fetch(`${baseURl}/api/${url}`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: token
+      "Content-Type": "application/json",
+      Authorization: token,
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   });
 
   const data = await res.json();
@@ -55,10 +56,10 @@ export const patchData = async (url, body, token) => {
 
 export const deleteData = async (url, token) => {
   const res = await fetch(`${baseURl}/api/${url}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
-      Authorization: token
-    }
+      Authorization: token,
+    },
   });
 
   const data = await res.json();

@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
-import { DataContext } from '../store/GlobalState';
-import { addToCart } from '../store/Actions';
-import Image from 'next/image';
+import React, { useContext, useState } from "react";
+import { DataContext } from "../store/GlobalState";
+import { addToCart } from "../store/Actions";
+import Image from "next/image";
 
-import Link from 'next/link';
+import Link from "next/link";
 
 function ProductItem({ product, handleCheck }) {
   const { state, dispatch } = useContext(DataContext);
@@ -13,13 +13,13 @@ function ProductItem({ product, handleCheck }) {
     return (
       <>
         <Link href={`product/${product._id}`}>
-          <a className='btn btn-info' style={{ marginRight: '5px', flex: 1 }}>
+          <a className='btn btn-info' style={{ marginRight: "5px", flex: 1 }}>
             View
           </a>
         </Link>
         <button
           className='btn btn-success'
-          style={{ marginLeft: '5px', flex: 1 }}
+          style={{ marginLeft: "5px", flex: 1 }}
           disabled={product.inStock === 0 ? true : false}
           onClick={() => {
             dispatch(addToCart(product, cart));
@@ -35,26 +35,26 @@ function ProductItem({ product, handleCheck }) {
     return (
       <>
         <Link href={`create/${product._id}`}>
-          <a className='btn btn-info' style={{ marginRight: '5px', flex: 1 }}>
+          <a className='btn btn-info' style={{ marginRight: "5px", flex: 1 }}>
             Edit
           </a>
         </Link>
         <button
           className='btn btn-danger'
-          style={{ marginLeft: '5px', flex: 1 }}
+          style={{ marginLeft: "5px", flex: 1 }}
           data-toggle='modal'
           data-target='#exampleModal'
           onClick={() =>
             dispatch({
-              type: 'ADD_MODAL',
+              type: "ADD_MODAL",
               payload: [
                 {
-                  data: '',
+                  data: "",
                   id: product._id,
                   title: product.title,
-                  type: 'DELETE_PRODUCT'
-                }
-              ]
+                  type: "DELETE_PRODUCT",
+                },
+              ],
             })
           }
         >
@@ -71,9 +71,10 @@ function ProductItem({ product, handleCheck }) {
           className='card-img-top'
           src={product.images[0].url}
           alt='prodcut'
-          style={{ objectFit: 'fill' }}
+          style={{ objectFit: "fill", layout: "fill" }}
           width={100}
           height={200}
+          fill
         />
 
         <div className='card-body'>
@@ -95,13 +96,13 @@ function ProductItem({ product, handleCheck }) {
     );
   return (
     <div className='card  col-md-3 m-3 p-2'>
-      {auth.user.role === 'admin' && (
+      {auth.user.role === "admin" && (
         <input
           type='checkbox'
           checked={product.checked}
           onChange={() => handleCheck(product._id)}
           className='position-absolute'
-          style={{ height: '30px', width: '30px' }}
+          style={{ height: "30px", width: "30px" }}
         />
       )}
       <Image
@@ -109,9 +110,10 @@ function ProductItem({ product, handleCheck }) {
         src={product.images[0].url}
         alt='prodcut'
         style={{
-          objectFit: 'fill'
+          objectFit: "fill",
+          layout: "fill",
         }}
-        layout='fill'
+        fill
         width={100}
         height={200}
       />
@@ -131,15 +133,15 @@ function ProductItem({ product, handleCheck }) {
         <p
           className='card-text'
           style={{
-            height: '5rem',
-            textOverflow: 'ellipsis',
-            overflow: 'hidden'
+            height: "5rem",
+            textOverflow: "ellipsis",
+            overflow: "hidden",
           }}
         >
           {product.description}
         </p>
         <div className='row justify-content-between mx-0'>
-          {auth.user.role === 'admin' ? adminLink() : userLink()}
+          {auth.user.role === "admin" ? adminLink() : userLink()}
         </div>
       </div>
     </div>

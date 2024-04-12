@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Head from 'next/head';
-import { DataContext } from '../store/GlobalState';
-import CartItem from '../components/CartItem';
-import Link from 'next/link';
-import { getData, postData } from '../utils/fetchData';
-import Pay from '../components/Pay';
-import { useRouter } from 'next/router';
+import React, { useContext, useEffect, useState } from "react";
+import Head from "next/head";
+import { DataContext } from "../store/GlobalState";
+import CartItem from "../components/CartItem";
+import Link from "next/link";
+import { getData, postData } from "../utils/fetchData";
+import Pay from "../components/Pay";
+import { useRouter } from "next/router";
 
 function Cart() {
   const { state, dispatch } = useContext(DataContext);
@@ -13,8 +13,8 @@ function Cart() {
 
   const [total, setTotal] = useState(0);
 
-  const [address, setAddress] = useState('');
-  const [mobile, setMobile] = useState('');
+  const [address, setAddress] = useState("");
+  const [mobile, setMobile] = useState("");
   const [payment, setPayment] = useState(false);
   const [callback, setCallback] = useState(false);
   const router = useRouter();
@@ -22,8 +22,8 @@ function Cart() {
   const handlePayment = async () => {
     if (!address || !mobile)
       return dispatch({
-        type: 'NOTIFY',
-        payload: { error: 'Please provide email and phone number' }
+        type: "NOTIFY",
+        payload: { error: "Please provide email and phone number" },
       });
     let newCart = [];
     for (const item of cart) {
@@ -36,29 +36,29 @@ function Cart() {
       //  setPayment(true);
       setCallback(!callback);
       return dispatch({
-        type: 'NOTIFY',
+        type: "NOTIFY",
         payload: {
           error:
-            'The product is out of stock or the quantity availaible is insufficient'
-        }
+            "The product is out of stock or the quantity availaible is insufficient",
+        },
       });
     }
     dispatch({
-      type: 'NOTIFY',
-      payload: { loading: true }
+      type: "NOTIFY",
+      payload: { loading: true },
     });
-    postData('order', { address, mobile, cart, total }, auth.token).then(
+    postData("order", { address, mobile, cart, total }, auth.token).then(
       (res) => {
         if (res.err)
-          return dispatch({ type: 'NOTIFY', payload: { error: res.err } });
-        dispatch({ type: 'ADD_CART', payload: [] });
+          return dispatch({ type: "NOTIFY", payload: { error: res.err } });
+        dispatch({ type: "ADD_CART", payload: [] });
 
         const newOrder = {
           ...res.newOrder,
-          user: auth.user
+          user: auth.user,
         };
-        dispatch({ type: 'ADD_ORDERS', payload: [...orders, newOrder] });
-        dispatch({ type: 'NOTIFY', payload: { success: res.msg } });
+        dispatch({ type: "ADD_ORDERS", payload: [...orders, newOrder] });
+        dispatch({ type: "NOTIFY", payload: { success: res.msg } });
         return router.push(`/order/${res.newOrder._id}`);
       }
     );
@@ -77,8 +77,8 @@ function Cart() {
   }, [cart]);
 
   useEffect(() => {
-    const cartLocal = JSON.parse(localStorage.getItem('next_cart'));
-    if (cartLocal.length > 0) {
+    const cartLocal = JSON.parse(localStorage.getItem("next_cart"));
+    if (cartLocal?.length > 0) {
       let newArr = [];
       const updateCart = async () => {
         for (const item of cartLocal) {
@@ -92,11 +92,11 @@ function Cart() {
               price,
               inStock,
               sold,
-              quantity: item.quantity > inStock - sold ? 1 : item.quantity
+              quantity: item.quantity > inStock - sold ? 1 : item.quantity,
             });
           }
         }
-        dispatch({ type: 'ADD_CART', payload: newArr });
+        dispatch({ type: "ADD_CART", payload: newArr });
       };
       updateCart;
     }
@@ -160,7 +160,7 @@ function Cart() {
             Total: <span className='text-info'>${total}</span>
           </h3>
 
-          <Link href={auth.user ? '#' : '/signin'}>
+          <Link href={auth.user ? "#" : "/signin"}>
             <a className='btn btn-dark my-2' onClick={handlePayment}>
               Proceed with payment
             </a>
