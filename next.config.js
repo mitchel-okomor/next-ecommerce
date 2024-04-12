@@ -1,8 +1,8 @@
 module.exports = {
   reactStrictMode: true,
   env: {
-    // BASE_URL: "https://tsales.herokuapp.com",
-    BASE_URL: "http://localhost:3000",
+    BASE_URL: "https://kind-puce-giraffe-fez.cyclic.app",
+    // BASE_URL: "http://localhost:3000",
     MONGO_URL:
       "mongodb+srv://next-commerce:IjeDd22pQpVqVlkp@next-commerce.sah3q08.mongodb.net/?retryWrites=true&w=majority&appName=next-commerce",
     // "mongodb+srv://next-ecormmerce:sRKyd4dCU7sP6M6@cluster0.wu8rg.mongodb.net/next-ecormmerce?retryWrites=true&w=majority",
